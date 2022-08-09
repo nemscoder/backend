@@ -3,6 +3,7 @@ import compression from 'compression'
 import cors from 'cors'
 import DriverRoutes from './routes/drivers.route'
 import loadDriversData from "./controllers/init.controller"
+import path from "path"
 
 loadDriversData()
 const PORT = 5000
@@ -14,6 +15,7 @@ const corstOpts = cors({
 })
 
 DriverRoutes(app)
+app.use('/static', express.static(path.join(__dirname, '/datasource/static')))
 app.use('*', corstOpts)
 app.use(compression())
 

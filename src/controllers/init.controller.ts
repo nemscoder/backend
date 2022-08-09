@@ -46,5 +46,5 @@ export default function loadDriversData () {
 
 declare global {
     // eslint-disable-next-line no-var
-    var drivers: object
+    var drivers: Array<Driver>
 }
