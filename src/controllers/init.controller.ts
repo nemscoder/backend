@@ -12,25 +12,34 @@ function readFile(fileSrc: string) {
     return fileContents
 }
 
+function* range(start: number, end: number, step:number) {
+  while (start < end) {
+    yield start;
+    start += step;
+  }
+}
+
 interface Driver {
-    id: number,
-    code: string,
-    firstname: string,
-    lastname: string,
-    country: string,
-    team: string,
-    place: number,
+  id: number,
+  code: string,
+  firstname: string,
+  lastname: string,
+  country: string,
+  team: string,
+  imgUrl: string,
+  place: number,
 }
 
 export default function loadDriversData () {
     console.log('reading drivers file...')
     const driversSource = readFile('../datasource/drivers.json')
     const drivers = driversSource ? JSON.parse(driversSource) : null
-    const placesCount = drivers.length
+    const placesArray = Array.from(range(1,drivers.length + 1,1)).sort(() => Math.random() - 0.5)
 
-    console.log('placesCount:', placesCount)
-
-    if(drivers) drivers.map((item : Driver) => item.place = 15)
+    if(drivers) drivers.map((item : Driver, i: number) => {
+      item.imgUrl = `/static/${item.code.toLocaleLowerCase()}.png`
+      item.place = placesArray[i]
+    })
 
     globalThis.drivers = drivers
 }
